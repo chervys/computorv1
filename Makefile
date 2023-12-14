@@ -6,7 +6,7 @@
 #    By: chervy <chervy@student.42lyon.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/12/14 14:35:43 by chervy            #+#    #+#              #
-#    Updated: 2023/12/14 14:47:19 by chervy           ###   ########.fr        #
+#    Updated: 2023/12/14 15:13:42 by chervy           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -33,7 +33,6 @@ clean:
 .PHONY: clean
 
 fclean: clean
-	rm -rf ${OBJS}
 .PHONY: fclean
 
 re: fclean all
