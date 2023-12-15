@@ -6,21 +6,21 @@
 #    By: chervy <chervy@student.42lyon.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/12/14 14:35:43 by chervy            #+#    #+#              #
-#    Updated: 2023/12/14 15:13:42 by chervy           ###   ########.fr        #
+#    Updated: 2023/12/15 16:07:11 by chervy           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
-NAME		= computorv1
+NAME        = computorv1
 
-SRCS_PATH	= ./srcs
-SRCS		= ${SRCS_PATH}/*
+SRCS_PATH   = ./srcs
+SRC         = ${SRCS_PATH}/*
 
-INC_PATH	= ./inc
-INC			= ${INC_PATH}/*
+INC_PATH    = ./inc
+INC         = ${INC_PATH}/*
 
-CC			= clang++
+CC          = clang++
 
-FLAGS		= -Wall -Wextra -Werror -std=c++11
+FLAGS       = -Wall -Wextra -Werror -std=c++11
 
 all: ${NAME}
 .PHONY: all
