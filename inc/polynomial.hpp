@@ -1,18 +1,24 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   computorv1.hpp                                     :+:      :+:    :+:   */
+/*   polynomial.hpp                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: chervy <chervy@student.42lyon.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/12/14 14:40:03 by chervy            #+#    #+#             */
-/*   Updated: 2023/12/15 16:14:50 by chervy           ###   ########.fr       */
+/*   Created: 2023/12/15 16:13:23 by chervy            #+#    #+#             */
+/*   Updated: 2023/12/15 16:17:34 by chervy           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef COMPUTORV1_HPP
-# define COMPUTORV1_HPP
 
-# include <polynomial.hpp>
+#ifndef POLYNOMIAL_HPP
+# define POLYNOMIAL_HPP
+
+# include <math.hpp>
+
+namespace ft
+{
+    
+}
 
 #endif
