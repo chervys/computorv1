@@ -6,14 +6,14 @@
 #    By: chervy <chervy@student.42lyon.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/12/14 14:35:43 by chervy            #+#    #+#              #
-#    Updated: 2023/12/15 16:07:11 by chervy           ###   ########.fr        #
+#    Updated: 2023/12/18 16:12:25 by chervy           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME        = computorv1
 
 SRCS_PATH   = ./srcs
-SRC         = ${SRCS_PATH}/*
+SRCS         = ${SRCS_PATH}/*
 
 INC_PATH    = ./inc
 INC         = ${INC_PATH}/*
