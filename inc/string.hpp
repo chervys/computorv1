@@ -6,10 +6,9 @@
 /*   By: chervy <chervy@student.42lyon.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/15 16:13:23 by chervy            #+#    #+#             */
-/*   Updated: 2023/12/18 16:24:13 by chervy           ###   ########.fr       */
+/*   Updated: 2023/12/19 14:19:23 by chervy           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
-
 
 #ifndef STRING_HPP
 # define STRING_HPP
@@ -28,7 +27,7 @@ namespace ft
         return (c >= 9 && c <= 13) || c == 32;
     }
 
-    void trim_whitespace(std::string &str)
+    void erase_whitespace(std::string &str)
     {
         std::string::iterator it = str.begin();
         while (it != str.end()) {
