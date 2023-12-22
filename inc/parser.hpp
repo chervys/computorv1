@@ -6,7 +6,7 @@
 /*   By: chervy <chervy@student.42lyon.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/20 11:51:44 by chervy            #+#    #+#             */
-/*   Updated: 2023/12/20 22:33:07 by chervy           ###   ########.fr       */
+/*   Updated: 2023/12/22 12:09:37 by chervy           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,14 +32,14 @@ namespace ft
             }
 
             static void check_and_erase_next_char(std::string &buffer, char character) {
-                if (buffer.length() > 0 && buffer[0] == character)
+                if (buffer.empty() == false && buffer[0] == character)
                     buffer.erase(0, 1);
                 else
                     throw syntax_error();
             }
 
             static void check_and_erase_next_char(std::string &buffer, std::string characters) {
-                if (buffer.length() > 0 && characters.find(buffer[0]) != std::string::npos)
+                if (buffer.empty() == false && characters.find(buffer[0]) != std::string::npos)
                     buffer.erase(0, 1);
                 else
                     throw syntax_error();

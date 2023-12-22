@@ -6,7 +6,7 @@
 /*   By: chervy <chervy@student.42lyon.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/15 16:13:23 by chervy            #+#    #+#             */
-/*   Updated: 2023/12/22 12:05:18 by chervy           ###   ########.fr       */
+/*   Updated: 2023/12/22 16:04:35 by chervy           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,8 +23,8 @@
 namespace ft
 {
     enum side {
-        LEFT = 0,
-        RIGHT = 1,
+        LEFT = 1,
+        RIGHT = -1,
     };
     
     class syntax_error : public std::exception {
@@ -51,7 +51,23 @@ namespace ft
             double get_exponent() const {
                 return this->_exponent;
             }
+
+            void set_coefficient(double coefficient) {
+                if (coefficient == 0.)
+                    this->_coefficient = 0.;
+                else
+                    this->_coefficient = coefficient;
+            }
+            void set_exponent(double exponent) {
+                this->_exponent = exponent;
+            }
     };
+
+	bool operator<(const term& lhs, const term& rhs) {
+        if (lhs.get_exponent() == rhs.get_exponent())
+            return lhs.get_coefficient() < rhs.get_coefficient();
+		return lhs.get_exponent() < rhs.get_exponent();
+	}
 
     class polynomial {
         private:
@@ -62,53 +78,58 @@ namespace ft
             
         public:
             polynomial(std::string input): _input(input) {
+                std::cout << this->_input << std::endl;
                 _parser();
+                _print_terms();
             }
             ~polynomial() {}
 
         private:
             void _parser() {
-                int side = RIGHT;
-                std::cout << this->_input << std::endl;
+                int side = LEFT;
                 
                 ft::erase_whitespace(this->_input);
-                std::cout << this->_input << std::endl;
-                
+
                 while (this->_input.empty() == false) {
-                    this->_get_next_term(this->_input, side);
-                    if (this->_input.empty() == false && this->_input[0] == '=') {
-                        if (side == LEFT)
-                            throw syntax_error();
-                        side = LEFT;
-                        ft::parser::check_and_erase_next_char(this->_input, "=");
-                    }
-                 }
+                    this->_check_and_up_side(side);
+                    this->_terms.push_front(
+                        this->_get_next_term(this->_input, side)
+                    );
+                    this->_check_and_up_side(side);
+                }
+
+                this->_terms.sort();
             }
 
-            term _get_next_term(std::string &str, int) {
-                term t;
+            void _check_and_up_side(int &side) {
+                if (this->_input.empty() == false && this->_input[0] == '=') {
+                    if (side == RIGHT)
+                        throw syntax_error();
+                    side = RIGHT;
+                    ft::parser::check_and_erase_next_char(this->_input, "=");
+                }
+            }
 
-                // Double
-                ft::parser::extract_double(str);
-                std::cout << this->_input << std::endl;
+            term _get_next_term(std::string &str, int side) {
+                term tmp;
 
-                // Char -> *
+                tmp.set_coefficient(ft::parser::extract_double(str) * side);
                 ft::parser::check_and_erase_next_char(str, '*');
-                std::cout << this->_input << std::endl;
-
-                // Char -> xX
                 ft::parser::check_and_erase_next_char(str, "Xx");
-                std::cout << this->_input << std::endl;
-
-                // Char -> ^
                 ft::parser::check_and_erase_next_char(str, '^');
-                std::cout << this->_input << std::endl;
+                tmp.set_exponent(ft::parser::extract_double(str));
 
-                // Double
-                ft::parser::extract_double(str);
-                std::cout << this->_input << std::endl;
+                return tmp;
+            }
 
-                return t;
+            void _print_terms() const {
+                std::list<term>::const_iterator current = this->_terms.cbegin();
+                std::list<term>::const_iterator end = this->_terms.cend();
+
+                while (current != end) {
+                    std::cout << current->get_coefficient() << "X^" << current->get_exponent() << std::endl;
+                    current++;
+                }
             }
     };
 }
