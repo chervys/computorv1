@@ -6,7 +6,7 @@
 /*   By: chervy <chervy@student.42lyon.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/15 16:13:23 by chervy            #+#    #+#             */
-/*   Updated: 2023/12/20 22:35:06 by chervy           ###   ########.fr       */
+/*   Updated: 2023/12/22 12:05:18 by chervy           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,11 @@
 
 namespace ft
 {
+    enum side {
+        LEFT = 0,
+        RIGHT = 1,
+    };
+    
     class syntax_error : public std::exception {
         public:
             virtual const char* what() const noexcept {
@@ -63,7 +68,7 @@ namespace ft
 
         private:
             void _parser() {
-                int side = 1;
+                int side = RIGHT;
                 std::cout << this->_input << std::endl;
                 
                 ft::erase_whitespace(this->_input);
@@ -71,7 +76,13 @@ namespace ft
                 
                 while (this->_input.empty() == false) {
                     this->_get_next_term(this->_input, side);
-                }
+                    if (this->_input.empty() == false && this->_input[0] == '=') {
+                        if (side == LEFT)
+                            throw syntax_error();
+                        side = LEFT;
+                        ft::parser::check_and_erase_next_char(this->_input, "=");
+                    }
+                 }
             }
 
             term _get_next_term(std::string &str, int) {
