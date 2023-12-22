@@ -6,7 +6,7 @@
 /*   By: chervy <chervy@student.42lyon.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/14 14:38:53 by chervy            #+#    #+#             */
-/*   Updated: 2023/12/15 16:07:13 by chervy           ###   ########.fr       */
+/*   Updated: 2023/12/20 22:36:02 by chervy           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,13 +21,31 @@ int main(int argc, char **argv)
     (void) argv;
     std::cout << std::endl;
 
-    /* Test Math.hpp */
+    /* Test math.hpp */
+    std::cout << "### Test math.hpp ###" << std::endl;
     {
-        std::cout << "### Test Math.hpp ###" << std::endl;
         double x = -3.14;
+        std::cout << "sqrt(x)       =	" << std::sqrt(x) << std::endl;
+        std::cout << "ft_sqrt(x)    =	" << ft::sqrt(x) << std::endl;
+    }
+    {
+        double x = 3.14;
+        std::cout << "sqrt(x)       =	" << std::sqrt(x) << std::endl;
+        std::cout << "ft_sqrt(x)    =	" << ft::sqrt(x) << std::endl;
+    }
+    std::cout << std::endl;
 
-        std::cout << "sqrt(x) =	" << std::sqrt(x) << std::endl;
-        std::cout << "ft_sqrt(x) =	" << ft::sqrt(x) << std::endl;
+    /* Test polynomial.hpp */
+    std::cout << "### Test polynomial.hpp ###" << std::endl;
+    {
+        try
+        {
+            ft::polynomial("-3.34*x^0 + 4*X^1 + 5*X^2 = 0*X^0");
+        }
+        catch(const std::exception& e)
+        {
+            std::cerr << e.what() << '\n';
+        }
     }
 
     std::cout << std::endl;
