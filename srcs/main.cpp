@@ -6,7 +6,7 @@
 /*   By: chervy <chervy@student.42lyon.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/14 14:38:53 by chervy            #+#    #+#             */
-/*   Updated: 2023/12/20 22:36:02 by chervy           ###   ########.fr       */
+/*   Updated: 2023/12/23 10:38:12 by chervy           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,7 @@ int main(int argc, char **argv)
     {
         try
         {
-            ft::polynomial("-3.34*x^0 + 4*X^1 + 5*X^2 = 0*X^0");
+            ft::polynomial("-3.34*x^0 + 4.1*X^1 - 4*X^1 + 5*X^2 = -10*X^0");
         }
         catch(const std::exception& e)
         {

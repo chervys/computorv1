@@ -6,7 +6,7 @@
 /*   By: chervy <chervy@student.42lyon.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/15 16:13:23 by chervy            #+#    #+#             */
-/*   Updated: 2023/12/22 16:04:35 by chervy           ###   ########.fr       */
+/*   Updated: 2023/12/23 10:40:28 by chervy           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,14 +26,14 @@ namespace ft
         LEFT = 1,
         RIGHT = -1,
     };
-    
+
     class syntax_error : public std::exception {
         public:
             virtual const char* what() const noexcept {
                 return "Syntax error.";
             }
     };
-    
+
     class term {
         private:
             double  _coefficient;
@@ -66,8 +66,8 @@ namespace ft
 	bool operator<(const term& lhs, const term& rhs) {
         if (lhs.get_exponent() == rhs.get_exponent())
             return lhs.get_coefficient() < rhs.get_coefficient();
-		return lhs.get_exponent() < rhs.get_exponent();
-	}
+        return lhs.get_exponent() < rhs.get_exponent();
+    }
 
     class polynomial {
         private:
@@ -79,15 +79,34 @@ namespace ft
         public:
             polynomial(std::string input): _input(input) {
                 std::cout << this->_input << std::endl;
-                _parser();
-                _print_terms();
+                this->_parser();
+                this->_reduce();
+                this->_print_terms();
             }
             ~polynomial() {}
 
         private:
+            void _reduce() {
+                std::list<term>::iterator   current = this->_terms.begin();
+                std::list<term>::iterator   end = this->_terms.end();
+                std::list<term>::iterator   next;
+
+                while (current != end) {
+                    next = std::next(current);
+                    if (next != end && current->get_exponent() == next->get_exponent()) {
+                        current->set_coefficient(
+                            current->get_coefficient() + next->get_coefficient()
+                        );
+                        this->_terms.erase(next);
+                    }
+                    else
+                        current++;
+                }
+            }
+        
             void _parser() {
                 int side = LEFT;
-                
+
                 ft::erase_whitespace(this->_input);
 
                 while (this->_input.empty() == false) {
