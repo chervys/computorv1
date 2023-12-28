@@ -6,17 +6,19 @@
 #    By: chervy <chervy@student.42lyon.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/12/14 14:35:43 by chervy            #+#    #+#              #
-#    Updated: 2023/12/28 15:45:46 by chervy           ###   ########.fr        #
+#    Updated: 2023/12/28 15:57:19 by chervy           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME        = computorv1
 
 SRCS_PATH   = ./srcs
-SRCS         = ${wildcard ${SRCS_PATH}/*.cpp}
+SRCS         = ${wildcard ${SRCS_PATH}/*.cpp} \
+				${wildcard ${SRCS_PATH}/*/*.cpp}
 
 INC_PATH    = ./inc
-INC         = ${wildcard ${INC_PATH}/*.hpp}
+INC         = ${wildcard ${INC_PATH}/*.hpp} \
+				${wildcard ${INC_PATH}/*/*.hpp}
 
 CC          = clang++
 
