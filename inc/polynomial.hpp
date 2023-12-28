@@ -6,7 +6,7 @@
 /*   By: chervy <chervy@student.42lyon.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/15 16:13:23 by chervy            #+#    #+#             */
-/*   Updated: 2023/12/23 10:40:28 by chervy           ###   ########.fr       */
+/*   Updated: 2023/12/28 15:57:10 by chervy           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,6 +61,14 @@ namespace ft
             void set_exponent(double exponent) {
                 this->_exponent = exponent;
             }
+
+            bool get_sign() const {
+                return this->_coefficient >= 0;
+            }
+
+            void print() const {
+                std::cout << ft::abs(this->_coefficient) << " * X^" << this->_exponent;
+            }
     };
 
 	bool operator<(const term& lhs, const term& rhs) {
@@ -73,19 +81,84 @@ namespace ft
         private:
             std::string     _input;
             std::list<term> _terms;
+            int             _degree;
+            double          _discriminant;
             
             polynomial() {}
             
         public:
             polynomial(std::string input): _input(input) {
-                std::cout << this->_input << std::endl;
+                (void) this->_degree;
+                (void) this->_discriminant;
                 this->_parser();
                 this->_reduce();
-                this->_print_terms();
+                this->_check_exponent();
+                this->_init_degree();
+                this->_init_discriminant();
+                this->_print();
             }
             ~polynomial() {}
 
         private:
+            void _solve() {
+                
+            }
+            
+            void _check_exponent() {
+                std::list<term>::const_iterator current = this->_terms.cbegin();
+                std::list<term>::const_iterator end = this->_terms.cend();
+                double a(0), b(0);
+
+                while (current != end) {
+                    a = current->get_exponent();
+                    b = (int)a;
+                    if (a != b)
+                        throw syntax_error();
+                    current++;
+                }
+            }
+
+            void _init_degree() {
+                std::list<term>::const_iterator last = std::prev(this->_terms.cend());
+                double a = last->get_exponent();
+                double b = (int) a;
+
+                if (a == b) {
+                    this->_degree = b;
+                }
+            }
+
+            void _init_discriminant() {
+                if (this->_degree == 2) {
+                    std::list<term>::const_iterator current = this->_terms.cbegin();
+                    std::list<term>::const_iterator end = this->_terms.cend();
+
+                    double a(0), b(0), c(0);
+
+                    while (current != end) {
+                        switch ((int) current->get_exponent())
+                        {
+                        case 0:
+                            c = current->get_coefficient();
+                            break;
+                        case 1:
+                            b = current->get_coefficient();
+                            break;
+                        case 2:
+                            a = current->get_coefficient();
+                            break;
+                        
+                        default:
+                            break;
+                        }
+                        current++;
+                    }
+                    
+                    this->_discriminant = (b * b) - (4 * a * c);
+                    std::cout << this->_discriminant << std::endl;
+                }
+            }
+
             void _reduce() {
                 std::list<term>::iterator   current = this->_terms.begin();
                 std::list<term>::iterator   end = this->_terms.end();
@@ -103,7 +176,7 @@ namespace ft
                         current++;
                 }
             }
-        
+         
             void _parser() {
                 int side = LEFT;
 
@@ -141,14 +214,42 @@ namespace ft
                 return tmp;
             }
 
-            void _print_terms() const {
+            void _print_reduce() const {
                 std::list<term>::const_iterator current = this->_terms.cbegin();
+                std::list<term>::const_iterator next = std::next(current);
                 std::list<term>::const_iterator end = this->_terms.cend();
 
+                std::cout << "Reduce form: ";
+
                 while (current != end) {
-                    std::cout << current->get_coefficient() << "X^" << current->get_exponent() << std::endl;
+                    current->print();
+                    if (next != end && next->get_coefficient() < 0) {
+                        std::cout << " - ";
+                    }
+                    else if (next != end) {
+                        std::cout << " + ";
+                    }
                     current++;
+                    next = std::next(current);
                 }
+                if (current == end) {
+                    std::cout << " = 0";
+                }
+                std::cout << std::endl;
+            }
+
+            void _print_degree() const {
+                std::cout << "Polynomial degree : " << this->_degree << std::endl;
+            }
+
+            void _print_solutions() const {
+                
+            }
+
+            void _print() const {
+                this->_print_reduce();
+                this->_print_degree();
+                this->_print_solutions();
             }
     };
 }
