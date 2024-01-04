@@ -1,3 +1,4 @@
 computorv1
 .DS_Store
 .vscode
+*.o

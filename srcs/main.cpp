@@ -6,19 +6,18 @@
 /*   By: chervy <chervy@student.42lyon.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/14 14:38:53 by chervy            #+#    #+#             */
-/*   Updated: 2023/12/28 15:37:38 by chervy           ###   ########.fr       */
+/*   Updated: 2024/01/04 15:56:04 by chervy           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
+#include "computorv1.hpp"
+
 #include <iostream>
-#include <math.h>
 
-#include <computorv1.hpp>
-
-int main(int argc, char **argv)
+int main(int argc, char** argv)
 {
-    (void) argc;
-    (void) argv;
+    (void)argc;
+    (void)argv;
     std::cout << std::endl;
 
     /* Test math.hpp */
@@ -38,12 +37,9 @@ int main(int argc, char **argv)
     /* Test polynomial.hpp */
     std::cout << "### Test polynomial.hpp ###" << std::endl;
     {
-        try
-        {
-            ft::polynomial("5 * X^0 + 4 * X^1 - 9.3 * X^2 = 1 * X^0");
-        }
-        catch(const std::exception& e)
-        {
+        try {
+            ft::polynomial("5 * X^0 + 4 * X^1 - 0 * X^2 = 5 * X^0");
+        } catch (const std::exception& e) {
             std::cerr << e.what() << '\n';
         }
     }

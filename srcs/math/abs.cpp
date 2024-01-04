@@ -1,18 +1,22 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   is_digit.cpp                                       :+:      :+:    :+:   */
+/*   abs.cpp                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: chervy <chervy@student.42lyon.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/12/28 15:38:38 by chervy            #+#    #+#             */
-/*   Updated: 2024/01/04 15:49:55 by chervy           ###   ########.fr       */
+/*   Created: 2024/01/02 17:40:42 by chervy            #+#    #+#             */
+/*   Updated: 2024/01/04 15:48:55 by chervy           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "string.hpp"
+#include "math.hpp"
 
-int ft::is_digit(char c)
+// Absolute value
+double ft::abs(double x)
 {
-    return c >= '0' && c <= '9';
+    if (x >= 0)
+        return (x);
+    else
+        return (-x);
 }
