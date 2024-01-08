@@ -6,132 +6,76 @@
 /*   By: chervy <chervy@student.42lyon.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/15 16:13:23 by chervy            #+#    #+#             */
-/*   Updated: 2023/12/22 16:04:35 by chervy           ###   ########.fr       */
+/*   Updated: 2024/01/04 15:52:09 by chervy           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef POLYNOMIAL_HPP
-# define POLYNOMIAL_HPP
+#define POLYNOMIAL_HPP
 
-# include <list>
-# include <stdexcept>
+#include <iostream>
+#include <list>
+#include <stdexcept>
 
-# include <math.hpp>
-# include <string.hpp>
-# include <parser.hpp>
+#include "math.hpp"
+#include "parser.hpp"
+#include "string.hpp"
 
-namespace ft
-{
-    enum side {
-        LEFT = 1,
-        RIGHT = -1,
-    };
-    
-    class syntax_error : public std::exception {
-        public:
-            virtual const char* what() const noexcept {
-                return "Syntax error.";
-            }
-    };
-    
-    class term {
-        private:
-            double  _coefficient;
-            double  _exponent;
+namespace ft {
 
-        public:
-            term(): _coefficient(0), _exponent(0) {}
-            term(double coefficient, double exponent)
-                : _coefficient(coefficient), _exponent(exponent) {}
-            ~term() {}
+enum side {
+    LEFT = 1,
+    RIGHT = -1,
+};
 
-            double get_coefficient() const {
-                return this->_coefficient;
-            }
-            double get_exponent() const {
-                return this->_exponent;
-            }
+class term {
+private:
+    double _coefficient;
+    double _exponent;
 
-            void set_coefficient(double coefficient) {
-                if (coefficient == 0.)
-                    this->_coefficient = 0.;
-                else
-                    this->_coefficient = coefficient;
-            }
-            void set_exponent(double exponent) {
-                this->_exponent = exponent;
-            }
-    };
+public:
+    term();
+    term(double coefficient, double exponent);
+    ~term();
 
-	bool operator<(const term& lhs, const term& rhs) {
-        if (lhs.get_exponent() == rhs.get_exponent())
-            return lhs.get_coefficient() < rhs.get_coefficient();
-		return lhs.get_exponent() < rhs.get_exponent();
-	}
+    double get_coefficient() const;
+    double get_exponent() const;
+    void set_coefficient(double coefficient);
+    void set_exponent(double exponent);
+    void print() const;
+    bool operator<(const term& rhs) const;
+};
 
-    class polynomial {
-        private:
-            std::string     _input;
-            std::list<term> _terms;
-            
-            polynomial() {}
-            
-        public:
-            polynomial(std::string input): _input(input) {
-                std::cout << this->_input << std::endl;
-                _parser();
-                _print_terms();
-            }
-            ~polynomial() {}
+class polynomial {
+private:
+    std::string _input;
+    std::list<term> _terms;
+    int _degree;
+    double _discriminant;
 
-        private:
-            void _parser() {
-                int side = LEFT;
-                
-                ft::erase_whitespace(this->_input);
+    polynomial();
 
-                while (this->_input.empty() == false) {
-                    this->_check_and_up_side(side);
-                    this->_terms.push_front(
-                        this->_get_next_term(this->_input, side)
-                    );
-                    this->_check_and_up_side(side);
-                }
+public:
+    polynomial(std::string input);
+    ~polynomial();
 
-                this->_terms.sort();
-            }
+private:
+    void _solve();
+    void _check_exponent();
+    void _init_degree();
+    void _init_discriminant();
+    void _reduce();
 
-            void _check_and_up_side(int &side) {
-                if (this->_input.empty() == false && this->_input[0] == '=') {
-                    if (side == RIGHT)
-                        throw syntax_error();
-                    side = RIGHT;
-                    ft::parser::check_and_erase_next_char(this->_input, "=");
-                }
-            }
+    term _get_next_term(std::string& str, int side);
+    void _check_and_up_side(int& side);
+    void _parser();
 
-            term _get_next_term(std::string &str, int side) {
-                term tmp;
+    void _print_reduce() const;
+    void _print_degree() const;
+    void _print_solutions() const;
+    void _print() const;
+};
 
-                tmp.set_coefficient(ft::parser::extract_double(str) * side);
-                ft::parser::check_and_erase_next_char(str, '*');
-                ft::parser::check_and_erase_next_char(str, "Xx");
-                ft::parser::check_and_erase_next_char(str, '^');
-                tmp.set_exponent(ft::parser::extract_double(str));
-
-                return tmp;
-            }
-
-            void _print_terms() const {
-                std::list<term>::const_iterator current = this->_terms.cbegin();
-                std::list<term>::const_iterator end = this->_terms.cend();
-
-                while (current != end) {
-                    std::cout << current->get_coefficient() << "X^" << current->get_exponent() << std::endl;
-                    current++;
-                }
-            }
-    };
-}
+} // namespace ft
 
 #endif

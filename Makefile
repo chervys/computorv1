@@ -6,33 +6,40 @@
 #    By: chervy <chervy@student.42lyon.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/12/14 14:35:43 by chervy            #+#    #+#              #
-#    Updated: 2023/12/18 16:12:25 by chervy           ###   ########.fr        #
+#    Updated: 2024/01/04 15:56:35 by chervy           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME        = computorv1
 
 SRCS_PATH   = ./srcs
-SRCS         = ${SRCS_PATH}/*
+SRCS         = ${wildcard ${SRCS_PATH}/*.cpp} \
+				${wildcard ${SRCS_PATH}/*/*.cpp}
 
 INC_PATH    = ./inc
-INC         = ${INC_PATH}/*
+INC         = ${wildcard ${INC_PATH}/*.hpp}
 
 CC          = clang++
 
 FLAGS       = -Wall -Wextra -Werror -std=c++11
 
+OBJS		= ${SRCS:.cpp=.o}
+
+%.o: %.cpp ${INC}
+	${CC} ${FLAGS} -I ${INC_PATH} -c $< -o ${<:.cpp=.o}
+
 all: ${NAME}
 .PHONY: all
 
-${NAME}: ${SRCS} ${INC}
-	${CC} ${FLAGS} -I ${INC_PATH} -o ${NAME} ${SRCS}
+${NAME}: ${OBJS}
+	${CC} ${FLAGS} -I ${INC_PATH} -o ${NAME} ${OBJS}
 
 clean:
-	rm -rf ${NAME}
+	rm -rf ${OBJS}
 .PHONY: clean
 
 fclean: clean
+	rm -rf ${NAME}
 .PHONY: fclean
 
 re: fclean all
