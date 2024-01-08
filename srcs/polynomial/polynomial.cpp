@@ -6,7 +6,7 @@
 /*   By: chervy <chervy@student.42lyon.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/04 14:42:42 by chervy            #+#    #+#             */
-/*   Updated: 2024/01/04 15:52:39 by chervy           ###   ########.fr       */
+/*   Updated: 2024/01/08 13:54:30 by chervy           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,45 +17,17 @@ ft::polynomial::polynomial() { }
 ft::polynomial::polynomial(std::string input)
     : _input(input)
 {
-    (void)this->_degree;
-    (void)this->_discriminant;
     this->_parser();
     this->_reduce();
     this->_check_exponent();
     this->_init_degree();
-    this->_init_discriminant();
     this->_print();
+    this->_solve();
 }
 
 ft::polynomial::~polynomial() { }
 
-void ft::polynomial::_check_exponent()
-{
-    std::list<term>::const_iterator current = this->_terms.cbegin();
-    std::list<term>::const_iterator end = this->_terms.cend();
-    double a(0), b(0);
-
-    while (current != end) {
-        a = current->get_exponent();
-        b = (int)a;
-        if (a != b)
-            throw parser::syntax_error();
-        current++;
-    }
-}
-
-void ft::polynomial::_init_degree()
-{
-    std::list<term>::const_iterator last = std::prev(this->_terms.cend());
-    double a = last->get_exponent();
-    double b = (int)a;
-
-    if (a == b) {
-        this->_degree = b;
-    }
-}
-
-void ft::polynomial::_init_discriminant()
+void ft::polynomial::_solve()
 {
     if (this->_degree == 2) {
         std::list<term>::const_iterator current = this->_terms.cbegin();
@@ -82,7 +54,86 @@ void ft::polynomial::_init_discriminant()
         }
 
         this->_discriminant = (b * b) - (4 * a * c);
-        std::cout << this->_discriminant << std::endl;
+
+        if (this->_discriminant > 0) {
+            double r = ft::sqrt(this->_discriminant);
+            double x1 = (-b - r) / (2 * a);
+            double x2 = (-b + r) / (2 * a);
+
+            std::cout << "Discriminant is strictly positive, the two solutions are :" << std::endl;
+            std::cout << x1 << std::endl;
+            std::cout << x2 << std::endl;
+        } else if (this->_discriminant == 0) {
+            double x = (-b) / (2 * a);
+
+            std::cout << "Discriminant is equal to zero, the solution is :" << std::endl;
+            std::cout << x << std::endl;
+        } else {
+            std::cout << "Discriminant is strictly negative, the two solutions are :" << std::endl;
+            std::cout << "(" << -b << " - i * sqrt(" << ft::abs(this->_discriminant) << ")) / " << 2 * a << std::endl;
+            std::cout << "(" << -b << " + i * sqrt(" << ft::abs(this->_discriminant) << ")) / " << 2 * a << std::endl;
+        }
+    } else if (this->_degree == 1) {
+        std::list<term>::const_iterator current = this->_terms.cbegin();
+        std::list<term>::const_iterator end = this->_terms.cend();
+
+        double a(0), b(0);
+
+        while (current != end) {
+            switch ((int)current->get_exponent()) {
+            case 0:
+                b = current->get_coefficient();
+                break;
+            case 1:
+                a = current->get_coefficient();
+                break;
+
+            default:
+                break;
+            }
+            current++;
+        }
+
+        std::cout << "The solution is :" << std::endl;
+        if (b == 0)
+            std::cout << a << std::endl;
+        else
+            std::cout << a / b << std::endl;
+    } else if (this->_degree == 0) {
+        std::cout << "There is no solution." << std::endl;
+    } else {
+        std::cout << "The polynomial degree is strictly greater than 2, I can't solve." << std::endl;
+    }
+}
+
+void ft::polynomial::_check_exponent()
+{
+    std::list<term>::const_iterator current = this->_terms.cbegin();
+    std::list<term>::const_iterator end = this->_terms.cend();
+    double a(0), b(0);
+
+    while (current != end) {
+        a = current->get_exponent();
+        b = (int)a;
+        if (a != b || a < 0)
+            throw parser::syntax_error();
+        current++;
+    }
+}
+
+void ft::polynomial::_init_degree()
+{
+    if (this->_terms.size() == 0) {
+        this->_degree = 0;
+        return;
+    }
+
+    std::list<term>::const_iterator last = std::prev(this->_terms.cend());
+    double a = last->get_exponent();
+    double b = (int)a;
+
+    if (a == b) {
+        this->_degree = b;
     }
 }
 
@@ -99,6 +150,12 @@ void ft::polynomial::_reduce()
             this->_terms.erase(next);
         } else
             current++;
+    }
+
+    std::list<term>::iterator last = std::prev(this->_terms.end());
+    while (last->get_coefficient() == 0 && this->_terms.size() > 0) {
+        this->_terms.erase(last);
+        last = std::prev(this->_terms.end());
     }
 }
 
@@ -148,6 +205,11 @@ void ft::polynomial::_print_reduce() const
 
     std::cout << "Reduce form: ";
 
+    if (this->_terms.size() == 0) {
+        std::cout << "..." << std::endl;
+        return;
+    }
+
     while (current != end) {
         current->print();
         if (next != end && next->get_coefficient() < 0) {
@@ -169,11 +231,8 @@ void ft::polynomial::_print_degree() const
     std::cout << "Polynomial degree : " << this->_degree << std::endl;
 }
 
-void ft::polynomial::_print_solutions() const { }
-
 void ft::polynomial::_print() const
 {
     this->_print_reduce();
     this->_print_degree();
-    this->_print_solutions();
 }
