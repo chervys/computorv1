@@ -6,11 +6,11 @@
 /*   By: chervy <chervy@student.42lyon.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/28 16:54:47 by chervy            #+#    #+#             */
-/*   Updated: 2024/01/04 15:49:34 by chervy           ###   ########.fr       */
+/*   Updated: 2024/01/08 14:02:04 by chervy           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "polynomial.hpp"
+#include "term.hpp"
 
 ft::term::term()
     : _coefficient(0)
