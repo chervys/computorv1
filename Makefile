@@ -6,11 +6,11 @@
 #    By: chervy <chervy@student.42lyon.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/12/14 14:35:43 by chervy            #+#    #+#              #
-#    Updated: 2024/01/04 15:56:35 by chervy           ###   ########.fr        #
+#    Updated: 2024/01/08 14:56:42 by chervy           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
-NAME        = computorv1
+NAME        = computor
 
 SRCS_PATH   = ./srcs
 SRCS         = ${wildcard ${SRCS_PATH}/*.cpp} \
