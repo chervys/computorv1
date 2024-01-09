@@ -6,7 +6,7 @@
 /*   By: chervy <chervy@student.42lyon.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/04 15:41:02 by chervy            #+#    #+#             */
-/*   Updated: 2024/01/04 21:38:50 by chervy           ###   ########.fr       */
+/*   Updated: 2024/01/09 15:39:39 by chervy           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,9 +15,13 @@
 double ft::parser::extract_double(std::string& str)
 {
     size_t i = 0;
-    double x = NAN;
+    double x;
 
-    x = std::stod(str, &i);
+    try {
+        x = std::stod(str, &i);
+    } catch (const std::exception& e) {
+        throw syntax_error();
+    }
     str.erase(0, i);
 
     return x;
