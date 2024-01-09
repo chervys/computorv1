@@ -6,7 +6,7 @@
 /*   By: chervy <chervy@student.42lyon.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/04 14:42:42 by chervy            #+#    #+#             */
-/*   Updated: 2024/01/08 14:47:12 by chervy           ###   ########.fr       */
+/*   Updated: 2024/01/08 15:44:58 by chervy           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -95,9 +95,12 @@ void ft::polynomial::_solve()
         if (b == 0)
             std::cout << a << std::endl;
         else
-            std::cout << a / b << std::endl;
+            std::cout << b / a << std::endl;
     } else if (this->_degree == 0) {
-        std::cout << "There is no solution." << std::endl;
+        if (this->_terms.begin()->get_coefficient() == 0)
+            std::cout << "The set of real numbers are solutions." << std::endl;
+        else
+            std::cout << "There is no solution." << std::endl;
     } else {
         std::cout << "The polynomial degree is strictly greater than 2, I can't solve." << std::endl;
     }
