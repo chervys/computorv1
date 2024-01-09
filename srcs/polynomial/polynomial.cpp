@@ -6,7 +6,7 @@
 /*   By: chervy <chervy@student.42lyon.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/04 14:42:42 by chervy            #+#    #+#             */
-/*   Updated: 2024/01/09 16:01:20 by chervy           ###   ########.fr       */
+/*   Updated: 2024/01/09 16:31:52 by chervy           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -153,7 +153,7 @@ void ft::polynomial::_reduce()
     }
 
     std::list<term>::iterator last = std::prev(this->_terms.end());
-    while (last->get_coefficient() == 0 && this->_terms.size() > 0) {
+    while (last->get_coefficient() == 0 && this->_terms.size() > 1) {
         this->_terms.erase(last);
         last = std::prev(this->_terms.end());
     }
@@ -173,6 +173,9 @@ void ft::polynomial::_parser()
         this->_terms.push_front(this->_get_next_term(this->_input, side));
         this->_check_and_up_side(side);
     }
+
+    if (side == LEFT)
+        throw ft::parser::syntax_error();
 
     this->_terms.sort();
 }
@@ -209,7 +212,6 @@ void ft::polynomial::_print_reduce() const
     std::cout << "Reduce form: ";
 
     if (this->_terms.size() == 0) {
-        std::cout << "..." << std::endl;
         return;
     }
 
