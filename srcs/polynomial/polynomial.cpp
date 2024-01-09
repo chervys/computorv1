@@ -6,7 +6,7 @@
 /*   By: chervy <chervy@student.42lyon.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/04 14:42:42 by chervy            #+#    #+#             */
-/*   Updated: 2024/01/08 15:44:58 by chervy           ###   ########.fr       */
+/*   Updated: 2024/01/09 16:01:20 by chervy           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -162,6 +162,9 @@ void ft::polynomial::_reduce()
 void ft::polynomial::_parser()
 {
     int side = LEFT;
+
+    if (this->_input.length() == 0)
+        throw ft::parser::syntax_error();
 
     ft::erase_whitespace(this->_input);
 
